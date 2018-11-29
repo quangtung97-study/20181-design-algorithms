@@ -85,4 +85,91 @@
                 \mathcal{O}\left(m \times n\right)
 \end{align*}
 
+\begin{align*}
+    &\textrm{Số các segment từ vị trí thứ j của số 1, ứng với k 
+    số 1 là: } \\
+    &\quad\quad C_{j - 1} \times C_{j - 1 + k} 
+\end{align*}
+
+Gọi $C_j$ là số các phần tử $0$ sau phần tử $1$ thứ $j$, cộng $1$. 
+($j = \overline{1, m})$ và $C_0$ là phần tử $0$ bắt đầu xâu M, cộng $1$.
+
+\begin{align*}
+    &\Rightarrow \textrm{Tổng số segment ứng với mỗi k: } \\
+    &\quad\quad X_k = \sum_{j = 1}^{m + 1 - k} C_{j - 1} \times C_{j - 1 + k} 
+\end{align*}\\[1cm]
+
+% FFT
+\noindent Với:  $N = 2^p$
+\begin{align*}
+    X_u &= \mathcal{F}[x_i]_u = \sum_{i = 0}^{N - 1} x_i 
+    e^{-j\frac{2\pi i u}{N}} \\
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i} e^{-j\frac{2\pi 2 i u}{N}}
+    + \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i + 1} 
+    e^{-j\frac{2\pi (2i + 1) u}{N}} \\
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i} e^{-j\frac{2\pi i u}{N/2}}
+    + e^{-j\frac{2\pi u}{N}} 
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i+ 1} 
+    e^{-j\frac{2\pi i u}{N / 2}}
+\end{align*}\\[1cm]
+
+\noindent Đặt: $a_i$ là dãy các số có chỉ số chẵn lấy ra từ $x_i$. \\
+\hspace*{22pt} $b_i$ là dãy các số có chỉ số lẻ lấy ra từ $x_i$.
+
+\noindent Ta có: 
+\begin{align*}
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i} e^{-j\frac{2\pi i u}{N/2}}
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} a_i e^{-j\frac{2\pi i u}{N/2}} \\
+    &= \mathcal{F}[a_i]_u 
+    \quad\quad\left(\textrm{Có }\frac{N}{2}\textrm{ phần tử}\right) \\
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i + 1} e^{-j\frac{2\pi i u}{N/2}}
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} b_i e^{-j\frac{2\pi i u}{N/2}} \\
+    &= \mathcal{F}[b_i]_u
+    \quad\quad\left(\textrm{Có }\frac{N}{2}\textrm{ phần tử}\right)
+\end{align*}
+Nhưng lại có: $u = \overline{0, N - 1}$ \\[1cm]
+
+\newpage
+\noindent Tuy nhiên, ta có thể thấy:
+\begin{align*}
+    e^{-j\frac{2\pi i u}{N/2}} 
+    &= e^{-j\frac{2\pi i u}{N/2} + j 2\pi i}  \\
+    &= e^{-j\frac{2\pi i (u - N/2)}{N/2}}
+\end{align*}
+Tuần hoàn với chu kì $\frac{N}{2}$ \\
+Nên ta chỉnh cần tính $\frac{N}{2}$ giá trị $u$ cho 
+$\mathcal{F}[a_i]_u$ và $\mathcal{F}[b_i]_u$ là đủ. \\[1cm]
+
+\noindent Từ đó: \\
+Nếu xét với $u = \overline{0, \frac{N}{2} - 1}$
+\begin{align*}
+    \mathcal{F}[x_i]_u &= \mathcal{F}[a_i]_u 
+    + e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u \\
+    \mathcal{F}[x_i]_{u + N/2} &= \mathcal{F}[a_i]_u 
+    + e^{-j\frac{2\pi (u + N/2)}{N}} \mathcal{F}[b_i]_u \\
+    &= \mathcal{F}[a_i]_u 
+    - e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u
+\end{align*}\\[1cm]
+
+\noindent Thời gian tính toán:  \\
+Gọi $T(n)$ là thời gian tính cho giải thuật này.
+\begin{align*}
+    &T\left(n\right) = 2 T\left(\frac{n}{2}\right) 
+    + \Theta \left(n\right) \\
+    &\Rightarrow T(n) = \Theta \left( n \log n\right)
+\end{align*}
+
+% Example
+\begin{align*}
+    W_{s, u} = e^{-j\frac{2\pi u}{2 (1 \ll s)}}
+\end{align*}
+
+\begin{align*}
+    \mathcal{F}[x_i]_u &= \mathcal{F}[a_i]_u 
+    + e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u \\
+    \mathcal{F}[x_i]_{u + N/2} &= \mathcal{F}[a_i]_u 
+    - e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u
+\end{align*}\\[1cm]
+
+
 \end{document}
