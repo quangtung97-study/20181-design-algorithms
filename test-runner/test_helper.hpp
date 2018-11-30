@@ -4,8 +4,13 @@
 #include <istream>
 #include <string>
 #include <vector>
+#include <chrono>
 
-typedef void (*callback_handler)(std::istream& result, std::istream& actual);
+using std::chrono::milliseconds;
+
+typedef void (*callback_handler)(std::istream& output, std::istream& answer);
+
+void set_time_limit(milliseconds ms); 
 
 void test_with(
         const std::string& input_path, 

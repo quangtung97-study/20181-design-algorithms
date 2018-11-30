@@ -17,22 +17,18 @@ std::ostream& operator << (std::ostream& out,
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
 #define KBLU  "\x1B[34m"
-#define KMAG  "\x1B[35m"
-#define KCYN  "\x1B[36m"
-#define KWHT  "\x1B[37m"
 
 static void handle_output(
-        std::istream& result, std::istream& actual) {
+        std::istream& output, std::istream& answer) {
     std::vector<ll> A, B;
 
     ll x;
-    while (result >> x) {
+    while (output >> x) {
         A.push_back(x);
     }
 
-    while (actual >> x) {
+    while (answer >> x) {
         B.push_back(x);
     }
 
@@ -46,7 +42,7 @@ static void handle_output(
         std::cout << KRED;
         std::cout << "FAILED" << std::endl;
         std::cout << "Output: " << A << std::endl;
-        std::cout << "Actual: " << B << std::endl;
+        std::cout << "Answer: " << B << std::endl;
         std::cout << KNRM;
     }
 
@@ -59,12 +55,14 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
+    set_time_limit(milliseconds{2000});
+
     std::string cmd = "g++ -std=c++14 -O2 ";
     cmd += argv[1];
     cmd += " -o program";
 
     int res = std::system(cmd.c_str());
-    if (res != 0)
+    if (res != 0) 
         exit(-1);
 
     auto test_cases = all_test_cases();
@@ -75,7 +73,9 @@ int main(int argc, char **argv) {
         std::string input = path + "/input";
         std::string output = path + "/output";
         std::cout << "=============================================" << std::endl;
-        std::cout << "Test case: " << dir << std::endl;
+        std::cout << KBLU 
+            << "Test case: " << dir 
+            << KNRM << std::endl;
         test_with(input, output, handle_output);
     }
     return 0;

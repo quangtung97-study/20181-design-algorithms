@@ -6,3 +6,5 @@ add_executable(main
     main.cpp
     test_helper.cpp
     )
+
+target_link_libraries(main pthread)
