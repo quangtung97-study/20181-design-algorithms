@@ -8,9 +8,10 @@
 typedef std::complex<double> cp;
 typedef long long ll;
 
-const ll MAX = 300000;
+const ll MAX = 200001;
+const ll FFT_MAX = 1 << 19;
 const double PI = 3.14159265358979323846;
-ll T[MAX * 2];
+ll T[FFT_MAX];
 
 ll ceil_log2(ll n) {
     ll v = 1;
@@ -31,8 +32,14 @@ std::bitset<64> reverse(std::bitset<64> set, ll bit_count) {
     return set;
 }
 
+void init_T(ll bit_count) {
+    ll N = 1 << bit_count;
+    for (ll i = 0; i < N; i++)
+        T[i] = reverse(i, bit_count).to_ullong();
+}
+
 void fft(cp *A, ll bit_count, bool inverse = false) {
-    static cp W[MAX];
+    static cp W[FFT_MAX / 2];
 
     ll N = 1 << bit_count;
 
@@ -83,9 +90,7 @@ void init() {
     bit_count = ceil_log2(C_len * 2);
     N = 1 << bit_count;
 
-    for (ll i = 0; i < N; i++) {
-        T[i] = reverse(i, bit_count).to_ullong();
-    }
+    init_T(bit_count);
 }
 
 void input() {
@@ -111,7 +116,7 @@ int main() {
 
     input();
     std::cout << zero_count << " ";
-    static cp A[MAX * 2], B[MAX * 2];
+    static cp A[FFT_MAX], B[FFT_MAX];
 
     std::copy(C, C + C_len, A);
     std::fill(A + C_len, A + N, 0);
