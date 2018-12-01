@@ -51,7 +51,7 @@ static std::string read_from_file(const std::string& path) {
     std::string result;
     std::ifstream file(path, std::ios::binary);
     if (!file)
-        throw std::runtime_error("Can't read the input file: " + path);
+        throw std::runtime_error("Can't read input file: " + path);
 
     const size_t BUFF_SIZE = 4096;
     char buff[BUFF_SIZE];
@@ -212,6 +212,5 @@ std::vector<std::string> all_test_cases() {
     else {
         throw std::runtime_error("No test directory");
     }
-
     return result;
 }
