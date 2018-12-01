@@ -9,8 +9,8 @@ typedef long long ll;
 std::ostream& operator << (std::ostream& out, 
         const std::vector<ll>& vec)
 {
-    for (auto e: vec)
-        std::cout << e << " ";
+    for (ll i = 0; i < std::min((ll)20, (ll)vec.size()); i++)
+        std::cout << vec[i] << " ";
     return out;
 }
 

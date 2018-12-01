@@ -142,6 +142,14 @@ static void parent(
     str = read_from(out_fd[0]);
     int status;
     ::waitpid((pid_t)pid, &status, 0);
+    if (WCOREDUMP(status)) 
+        std::cout << KRED << "Core Dump" 
+            << KNRM << std::endl;
+    else if (WEXITSTATUS(status) != 0) 
+        std::cout << KRED 
+            << "Error while running the program" 
+            << KNRM << std::endl;
+
 
     // End Testing
     auto t1 = steady_clock::now();
