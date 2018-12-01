@@ -8,6 +8,12 @@
 \begin{document}
 
 \begin{align*}
+    1 &\le n \le 2 \times 10^5 \\
+    -10^9 &\le a_i \le 10^9 \\
+    -10^9 &\le x \le 10^9
+\end{align*} \\[1cm]
+
+\begin{align*}
     &P(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_{m - 1} x^{m - 1} = 
     \sum_{i = 0}^{m - 1} a_i x ^ i \\
     &Q(x) = b_0 + b_1 x + b_2 x^2 + \dots + b_{n - 1} x^{n - 1} = 
@@ -31,7 +37,7 @@
 \begin{align*}
     &\textrm{Đặt: } \\
     &\quad\quad p = m + n - 1 \\
-    &\quad\quad N = \ceil[\Big]{\log_2 (p)} \\
+    &\quad\quad N = 2^{\ceil[\big]{\log_2 (p)}} \\
     &\quad\quad W_u = e ^ {-j\frac{2 \pi u}{N}}
 \end{align*}
 
@@ -89,15 +95,34 @@
     &\textrm{Số các segment từ vị trí thứ j của số 1, ứng với k 
     số 1 là: } \\
     &\quad\quad C_{j - 1} \times C_{j - 1 + k} 
-\end{align*}
-
-Gọi $C_j$ là số các phần tử $0$ sau phần tử $1$ thứ $j$, cộng $1$. 
-($j = \overline{1, m})$ và $C_0$ là phần tử $0$ bắt đầu xâu M, cộng $1$.
-
-\begin{align*}
-    &\Rightarrow \textrm{Tổng số segment ứng với mỗi k: } \\
-    &\quad\quad X_k = \sum_{j = 1}^{m + 1 - k} C_{j - 1} \times C_{j - 1 + k} 
 \end{align*}\\[1cm]
+
+\noindent Gọi $C_j$ là số các phần tử $0$ sau phần tử $1$ thứ $j$, cộng $1$. 
+($j = \overline{1, m})$ và $C_0$ là phần tử $0$ bắt đầu xâu M, cộng $1$.\\[1cm]
+
+\noindent $\Rightarrow$ Tổng số segment ứng với mỗi k:
+\begin{align*}
+    X_k &= \sum_{j = 1}^{m + 1 - k} C_{j - 1} \times C_{j - 1 + k}  \\
+    &= \sum_{p = 0}^{m - k} C_{p} \times C_{p + k} 
+\end{align*}\\[1cm]
+
+\noindent Gọi $D$ là dãy nghịch đảo của $C$. \\
+Hay: $D_i = C_{m - i} \quad\forall i = \overline{0, m}$ \\
+Ta có:
+\begin{align*}
+    C_{p + k} &= D_{m - k - p} \\
+    \Rightarrow X_k &= \sum_{p = 0}^{m - k} C_{p} \times C_{p + k}\\
+    &= \sum_{p = 0}^{m - k} C_{p} \times D_{m - k - p}\\
+\end{align*}\\[1cm]
+
+\noindent Nếu đặt:
+\begin{align*}
+    P(x) &= \sum_{p = 0}^{m - k} C_p x^p \\
+    Q(x) &= \sum_{p = 0}^{m - k} D_p x^p
+\end{align*}
+Thì $X_k$ chính là hệ số của $x^{m - k}$ của đa thức 
+$P(x) \times Q(x)$ \\[1cm]
+
 
 % FFT
 \noindent Với:  $N = 2^p$

@@ -58,7 +58,7 @@ static std::string read_from_file(const std::string& path) {
         file.read(buff, BUFF_SIZE);
         count = file.gcount();
         std::copy(buff, buff + count, std::back_inserter(result));
-    } while (count != 0);
+    } while (count > 0);
 
     return result;
 }
