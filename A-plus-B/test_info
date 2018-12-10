@@ -1,0 +1,6 @@
+test 00 - 04 : Manual Tests
+test 05 - 06 : 1000 elements random tests
+test 07 - 08 : 1000 elements property tests
+test 09 - 10 : 100000 elements property tests
+test 11 - 20 : 1000 elements random tests
+test 21 - 25 : 100000 elements random tests

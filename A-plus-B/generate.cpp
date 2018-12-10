@@ -9,7 +9,7 @@ int main() {
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    const int N = 100000;
+    const int N = 1000;
     std::cout << N << std::endl;
 
     for (int i = 0; i < N; i++)
