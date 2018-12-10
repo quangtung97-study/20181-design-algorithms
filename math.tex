@@ -196,5 +196,19 @@ Gọi $T(n)$ là thời gian tính cho giải thuật này.
     - e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u
 \end{align*}\\[1cm]
 
+% A plus B
+\begin{align*}
+    &\sum_{k = -n}^{n} W_k \sum_{i = -n}^k U_i \times V_{k - i} \\
+    &\textrm{Với: } k - i \le n \Leftrightarrow i \ge k - n \\
+    &(n = 50000)
+\end{align*}\\[1cm]
+
+\begin{align*}
+    &N = 2^{\ceil{\log_2 (4n + 1)}} \\
+    &R_k = \sum_{i = \max(-n, k - n) }^k U_i \times V_{k - i}
+    \quad \quad \mathcal{O} (N \log N)\\
+    &\sum_{k = -n}^n W_k R_k \quad\quad \mathcal{O}(n) 
+\end{align*}\\[1cm]
+
 
 \end{document}
