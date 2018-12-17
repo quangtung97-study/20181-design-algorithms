@@ -1,0 +1,91 @@
+\documentclass[../report.tex]{subfiles}
+
+\begin{document}
+\noindent Xét dãy số $x_i$ có $N$ phần tử, 
+$i = \overline{0, N - 1}$,
+$N = 2^p$, ta có: 
+\begin{align*}
+    X_u &= \mathcal{F}[x_i]_u = \sum_{i = 0}^{N - 1} x_i 
+    e^{-j\frac{2\pi i u}{N}} \\
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} 
+    x_{2i} e^{-j\frac{2\pi 2 i u}{N}}
+    + \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i + 1} 
+    e^{-j\frac{2\pi (2i + 1) u}{N}} \\
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} 
+    x_{2i} e^{-j\frac{2\pi i u}{N/2}}
+    + e^{-j\frac{2\pi u}{N}} 
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i+ 1} 
+    e^{-j\frac{2\pi i u}{N / 2}}
+\end{align*}
+
+\noindent Đặt: $a_i$ là dãy các số có chỉ số chẵn lấy ra từ $x_i$. \\
+\hspace*{22pt} $b_i$ là dãy các số có chỉ số lẻ lấy ra từ $x_i$.
+
+\noindent Ta được: 
+\begin{align*}
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i} e^{-j\frac{2\pi i u}{N/2}}
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} a_i e^{-j\frac{2\pi i u}{N/2}} \\
+    &= \mathcal{F}[a_i]_u 
+    \quad\quad\left(\textrm{Có }\frac{N}{2}\textrm{ phần tử}\right) \\
+    \sum_{i = 0}^{\frac{N}{2} - 1} x_{2i + 1} e^{-j\frac{2\pi i u}{N/2}}
+    &= \sum_{i = 0}^{\frac{N}{2} - 1} b_i e^{-j\frac{2\pi i u}{N/2}} \\
+    &= \mathcal{F}[b_i]_u
+    \quad\quad\left(\textrm{Có }\frac{N}{2}\textrm{ phần tử}\right)
+\end{align*}
+Nhưng lại có: $u = \overline{0, N - 1}$ \\[5mm]
+
+\noindent Tuy nhiên, ta có thể thấy:
+\begin{align*}
+    e^{-j\frac{2\pi i u}{N/2}} 
+    &= e^{-j\frac{2\pi i u}{N/2} + j 2\pi i}  \\
+    &= e^{-j\frac{2\pi i (u - N/2)}{N/2}}
+\end{align*}
+Tuần hoàn với chu kì $\frac{N}{2}$ \\
+Nên ta chỉ cần tính $\frac{N}{2}$ giá trị $u$ cho 
+$\mathcal{F}[a_i]_u$ và $\mathcal{F}[b_i]_u$ là đủ. Đây cũng
+chính là mấu chốt làm cho thuật toán FFT có thể thực hiện được với 
+thời gian $\mathcal{O}(N \log N)$. \\[5mm]
+
+\noindent Từ đó: \\
+Nếu xét với $u = \overline{0, \frac{N}{2} - 1}$
+\begin{align*}
+    \mathcal{F}[x_i]_u &= \mathcal{F}[a_i]_u 
+    + e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u \\
+    \mathcal{F}[x_i]_{u + N/2} &= \mathcal{F}[a_i]_u 
+    + e^{-j\frac{2\pi (u + N/2)}{N}} \mathcal{F}[b_i]_u \\
+    &= \mathcal{F}[a_i]_u 
+    - e^{-j\frac{2\pi u}{N}} \mathcal{F}[b_i]_u
+\end{align*}\\[5mm]
+
+\noindent Thời gian tính toán:  \\
+Gọi $T(n)$ là thời gian tính cho giải thuật này, áp dụng
+định lý thợ, ta được: 
+\begin{align*}
+    &T\left(n\right) = 2 T\left(\frac{n}{2}\right) 
+    + \Theta \left(n\right) \\
+    &\Rightarrow T(n) = \Theta \left( n \log n\right)
+\end{align*}
+
+\noindent Ta có thể sử dụng đệ quy để implement thuật toán FFT. 
+Tuy nhiên cách implement đó là không hiệu quả, trong các bài toán 
+nhân nhanh đa thức và trong thực tế thì người ta thường sử dụng 
+thuật toán như sau: 
+\begin{itemize}
+\item Hoán vị các phần tử sử dụng đảo bit 
+giá trị nhị phân các chỉ số trong mảng. Như được 
+biểu diễn bằng hình sau: 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/swap.png}
+\end{figure}
+\item Thực hiện vòng lặp tính các DFT từ 
+$n = 2$ và tăng dần $\times 2$
+mỗi vòng lặp, như hình dưới đây: 
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figures/fft.png}
+\end{figure}
+
+\end{itemize}
+
+\end{document}

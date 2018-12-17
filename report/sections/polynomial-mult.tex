@@ -1,0 +1,95 @@
+\documentclass[../report.tex]{subfiles}
+
+\begin{document}
+Xét hai đa thức $P(x)$, $Q(x)$, ta có: 
+
+\begin{align*}
+    &P(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_{m - 1} x^{m - 1} = 
+    \sum_{i = 0}^{m - 1} a_i x ^ i \\
+    &Q(x) = b_0 + b_1 x + b_2 x^2 + \dots + b_{n - 1} x^{n - 1} = 
+    \sum_{j = 0}^{n - 1} b_j x^j \\
+    &P(x) \times Q(x) = c_0 + c_1 x + c_2 x^2 + \dots 
+    + c_{p - 1} x^{p - 1} =
+    \sum_{k = 0}^{p - 1} c_k x^k 
+\end{align*}
+
+\noindent Đồng nhất hệ số, ta được: 
+\begin{align*}
+    &\Rightarrow c_k = \sum_{i = 0} ^ {k} a_i \times b_{k - i} \\
+    &\textrm{Với: } \quad i \le m - 1 \\
+    &\textrm{Và: } \quad k - i \le n - 1 \Leftrightarrow i \ge k - n + 1\\
+    &\textrm{Hay: } \quad 
+    c_k = \sum_{i = \max(0, k - n + 1)} ^ {\min(k, m - 1)} 
+    a_i \times b_{k - i} 
+    \quad\quad\forall k = \overline{0, m + n - 2} \\
+    &\textrm{Thời gian tính toán: } \mathcal{O}\left(m \times n\right)
+\end{align*}
+(Do cần phải sử dụng $m \times n$ phép nhân và số phép cộng nhỏ 
+hơn số phép nhân).
+
+\noindent Tuy nhiên, công thức trên khá phức tạp khi phải xét đến sự 
+khác biệt giữa bậc của $P(x)$ và $Q(x)$. \\
+Nếu đặt: 
+\begin{align*}
+    &\quad\quad p = m + n - 1 \\
+    &\quad\quad N = 2^{\ceil[\big]{\log_2 (p)}} \\
+    &\quad\quad W_u = e ^ {-j\frac{2 \pi u}{N}}
+\end{align*}
+
+\noindent Thay $W_u$ vào hai đã thức đã cho, ta được:
+\begin{align*}
+    &\quad\quad P(W_u) = \sum_{i = 0}^{m - 1} a_i W_u^i \\
+    &\quad\quad Q(W_u) = \sum_{j = 0}^{n - 1} b_j W_u^j \\
+    &\quad\quad P(W_u) \times Q(W_u) = \sum_{k = 0}^{p - 1} c_k W_u^k
+\end{align*}
+
+\noindent Đồng thời nếu mở rộng các hệ số của $P(x)$ 
+và $Q(x)$ cho đến bậc $N - 1$, hay: 
+\begin{align*}
+    &\quad\quad a_i = 0 \quad \forall i = \overline{m, N - 1} \\
+    &\quad\quad b_j = 0 \quad \forall j = \overline{n, N - 1} \\
+    &\quad\quad c_k = 0 \quad \forall k = \overline{p, N - 1} \\
+\end{align*}
+
+\noindent Ta sẽ được công thức đơn giản hơn như sau: 
+\begin{align*}
+    &\quad\quad c_k = \sum_{i = 0} ^ {k} a_i \times b_{k - i}
+    \quad\quad \forall k = \overline{0, N - 1}
+\end{align*}
+
+\noindent Và đồng thời: 
+\begin{align*}
+    &\quad\quad P(W_u) = \sum_{i = 0}^{N - 1} a_i W_u^i 
+    = \mathcal{F}[a_i]_u \\
+    &\quad\quad Q(W_u) = \sum_{i = 0}^{N - 1} b_i W_u^i 
+    = \mathcal{F}[b_i]_u \\
+    &\quad\quad P(W_u) \times Q(W_u) = \sum_{i = 0}^{N - 1} c_i W_u^i
+    = \mathcal{F}[c_i]_u
+\end{align*}
+Trong đó $\mathcal{F}[x_i]_u$ là phép biến đổi Fourier rời rạc của 
+dãy $x_i$.
+
+\noindent Từ đó ta có thể tính được dãy $c_i$ như sau:
+\begin{align*}
+    \Rightarrow c_i 
+    &= \mathcal{F}^{-1} \left[ \mathcal{F}[c_i]_u \right]_i \\
+    &= \mathcal{F}^{-1} \left[ P(W_u) \times Q(W_u) \right]_i \\
+    &= \mathcal{F}^{-1} \left[ 
+        \mathcal{F}[a_i]_u \times
+        \mathcal{F}[b_i]_u \right]_i
+\end{align*}
+
+Với thuật toán tính biến đổi Fourier nhanh (thuận và ngược),
+thời gian tính toán $\mathcal{O}(N \log N)$, ta có thời gian 
+tổng của thuật toán nhân đa thức sử dụng FFT như sau: 
+\begin{align*}
+    &\quad\quad \mathcal{F}[a_i]_u \quad\quad \mathcal{O}(N \log N) \\
+    &\quad\quad \mathcal{F}[b_i]_u \quad\quad \mathcal{O}(N \log N) \\
+    &\quad\quad P(W_u) \times Q(W_u) \quad\quad \mathcal{O}(N) \\
+    &\quad\quad \mathcal{F}^{-1}[P(W_u) \times Q(W_u)]_i 
+    \quad\quad \mathcal{O}(N \log N) \\
+    &\textrm{Tổng: } \quad \mathcal{O}(N \log N) < 
+                \mathcal{O}\left(m \times n\right)
+\end{align*}
+
+\end{document}
