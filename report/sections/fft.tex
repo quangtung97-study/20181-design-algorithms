@@ -87,5 +87,63 @@ mỗi vòng lặp, như hình dưới đây:
 \end{figure}
 
 \end{itemize}
+Code của thuật toán FFT: 
+\begin{lstlisting}
+std::bitset<64> reverse(std::bitset<64> set, ll bit_count) {
+    for (ll i = 0; i < bit_count / 2; i++) {
+        bool tmp = set[i];
+        set[i] = set[bit_count - 1 - i];
+        set[bit_count - 1 - i] = tmp;
+    }
+    return set;
+}
+
+void init_T(ll bit_count) {
+    ll N = 1 << bit_count;
+    for (ll i = 0; i < N; i++)
+        T[i] = reverse(i, bit_count).to_ullong();
+}
+
+void fft(cp *A, ll bit_count, bool inverse = false) {
+    static cp W[FFT_MAX / 2];
+
+    ll N = 1 << bit_count;
+
+    for (ll i = 0; i < N; i++) {
+        ll j = T[i];
+        if (i < j) 
+            std::swap(A[i], A[j]);
+    }
+
+    for (ll step = 1; step < N; step <<= 1) {
+        double angle = -PI / step;
+        if (inverse)
+            angle = -angle;
+
+        cp w(1, 0), wn(std::cos(angle), std::sin(angle));
+        for (ll i = 0; i < step; i++) {
+            W[i] = w;
+            w *= wn;
+        }
+
+        for (ll start_even = 0; start_even < N; start_even += step * 2) {
+            auto start_odd = start_even + step;
+            for (ll i = 0; i < step; i++) {
+                cp U = A[start_even + i];
+                cp V = W[i] * A[start_odd + i]; 
+                A[start_even + i] = U + V;
+                A[start_odd + i] = U - V;
+            }
+        }
+    }
+
+    if (inverse) {
+        for (ll i = 0; i < N; i++)
+            A[i] /= N;
+    }
+}
+\end{lstlisting}
+Trong đó init\_T dùng để khởi tạo mảng chuyển vị T. step là biến biểu 
+thị rằng các giá trị FFT với kích thước step đã được tính. Biến inverse = true khi mà ta muốn tính FFT ngược. 
 
 \end{document}
